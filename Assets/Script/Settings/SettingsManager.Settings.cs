@@ -330,6 +330,8 @@ namespace YARG.Settings
             public IntSetting    FpsCap      { get; } = new(60, 0, onChange: FpsCapCallback);
             public IntSetting    VenueFpsCap { get; } = new(60, 0);
 
+            public ToggleSetting LimitBackgroundFramerate { get; } = new(true);
+
             public DropdownSetting<FullScreenMode> FullscreenMode { get; }
                 = new(FullScreenMode.FullScreenWindow, FullscreenModeCallback)
                 {

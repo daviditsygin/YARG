@@ -1124,6 +1124,10 @@
                 "Name": "FPS Cap",
                 "Description": "The framerate cap. <color=white>YOU DO NOT NEED TO PLAY YARG ON 1000FPS.</color> VSync recommended."
             },
+            "LimitBackgroundFramerate": {
+                "Name": "Limit Background Framerate",
+                "Description": "Reduces the framerate while YARG is unfocused (tabbed out) to lower CPU/GPU usage. The framerate is restored when focus returns."
+            },
             "FpsStats": {
                 "Name": "Show FPS Counter",
                 "Description": "Shows the framerate counter on the Status Bar."
