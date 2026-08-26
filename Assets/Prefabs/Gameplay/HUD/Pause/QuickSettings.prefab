@@ -1080,6 +1080,7 @@ MonoBehaviour:
   _volumePauseSettingPrefab: {fileID: -8693196744517643411, guid: 24a963b7c0e99274fbace94c7c237fb0, type: 3}
   _intPauseSettingPrefab: {fileID: 3409319213755494670, guid: 9655e3b12bad24e388e0a957b41fcca2, type: 3}
   _togglePauseSettingPrefab: {fileID: 4187394943278295409, guid: 308d3ce23f5214213beba54e23222217, type: 3}
+  _dropdownPauseSettingPrefab: {fileID: -8693196744517643411, guid: 1a53a1c853f84986b59fcbcee4437b41, type: 3}
 --- !u!224 &4220475146792831268 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8918172421510936374, guid: d0426e4d1cafc1c489d1df380508ec96, type: 3}

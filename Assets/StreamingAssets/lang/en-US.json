@@ -1394,6 +1394,7 @@
             },
             "MetronomeSound": {
                 "Name": "Metronome Sound",
+                "PauseName": "Metronome Sound",
                 "Description": "The sample to use for metronome clicks.",
                 "Dropdown": {
                     "Castanet": "Castanet",
