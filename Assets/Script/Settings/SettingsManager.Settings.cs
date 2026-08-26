@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using UnityEngine;
@@ -134,6 +135,7 @@ namespace YARG.Settings
             public Dictionary<string, HUDPositionProfile> HUDPositionProfiles = new();
 
             private static MetronomeSample? _previousMetronomeSound;
+            private static CancellationTokenSource _metronomePreviewCts;
 
             public bool ShowCustomCharacterInstructions = true;
 
@@ -1263,21 +1265,30 @@ namespace YARG.Settings
                 // Only play sound if this isn't the initial settings load to avoid beeping on start up
                 if (_previousMetronomeSound != null)
                 {
-                    _ = metronomePreview(sample);
+                    _metronomePreviewCts?.Cancel();
+                    _metronomePreviewCts = new CancellationTokenSource();
+                    _ = metronomePreview(sample, _metronomePreviewCts.Token);
                 }
 
                 _previousMetronomeSound = sample;
             }
 
-            private static async Task metronomePreview(MetronomeSample sample)
+            private static async Task metronomePreview(MetronomeSample sample, CancellationToken token)
             {
-                GlobalAudioHandler.PlayMetronomeSoundEffect(sample, MetronomePitch.Hi);
-                await Task.Delay(200);
-                GlobalAudioHandler.PlayMetronomeSoundEffect(sample, MetronomePitch.Lo);
-                await Task.Delay(200);
-                GlobalAudioHandler.PlayMetronomeSoundEffect(sample, MetronomePitch.Lo);
-                await Task.Delay(200);
-                GlobalAudioHandler.PlayMetronomeSoundEffect(sample, MetronomePitch.Lo);
+                try
+                {
+                    GlobalAudioHandler.PlayMetronomeSoundEffect(sample, MetronomePitch.Hi);
+                    await Task.Delay(200, token);
+                    GlobalAudioHandler.PlayMetronomeSoundEffect(sample, MetronomePitch.Lo);
+                    await Task.Delay(200, token);
+                    GlobalAudioHandler.PlayMetronomeSoundEffect(sample, MetronomePitch.Lo);
+                    await Task.Delay(200, token);
+                    GlobalAudioHandler.PlayMetronomeSoundEffect(sample, MetronomePitch.Lo);
+                }
+                catch (OperationCanceledException)
+                {
+                    // A newer preview replaced this one
+                }
             }
 
             private static void CustomCharacterCallback(string file)
