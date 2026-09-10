@@ -285,28 +285,20 @@ namespace YARG.Gameplay
 
         private void Update()
         {
-
-
-            // Pause/unpause
-            if (Keyboard.current.escapeKey.wasPressedThisFrame)
+            // No keyboard exists on touch-only platforms
+            if (Keyboard.current is { } keyboard)
             {
-                if (_draggableHud.EditMode)
+                // Pause/unpause
+                if (keyboard.escapeKey.wasPressedThisFrame)
                 {
-                    SetEditHUD(false);
+                    TogglePause();
                 }
 
-                if ((!IsPractice || PracticeManager.HasSelectedSection) &&
-                    !DialogManager.Instance.IsDialogShowing &&
-                    !PlayerHasFailed)
+                // Toggle debug text
+                if (keyboard.ctrlKey.isPressed && keyboard.tabKey.wasPressedThisFrame)
                 {
-                    SetPaused(!_pauseMenu.IsOpen);
+                    ToggleDebugEnabled();
                 }
-            }
-
-            // Toggle debug text
-            if (Keyboard.current.ctrlKey.isPressed && Keyboard.current.tabKey.wasPressedThisFrame)
-            {
-                ToggleDebugEnabled();
             }
 
             // Skip the rest if paused
@@ -612,6 +604,25 @@ namespace YARG.Gameplay
             else
             {
                 Resume();
+            }
+        }
+
+        /// <summary>
+        ///     The Escape-key pause path, also used by the on-screen pause
+        ///     button on touch platforms.
+        /// </summary>
+        public void TogglePause()
+        {
+            if (_draggableHud.EditMode)
+            {
+                SetEditHUD(false);
+            }
+
+            if ((!IsPractice || PracticeManager.HasSelectedSection) &&
+                !DialogManager.Instance.IsDialogShowing &&
+                !PlayerHasFailed)
+            {
+                SetPaused(!_pauseMenu.IsOpen);
             }
         }
 
