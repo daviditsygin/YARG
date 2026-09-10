@@ -28,6 +28,9 @@ namespace Editor.Build
             // UTTypeFolder for the native folder picker (NativeFolderPicker.mm)
             project.AddFrameworkToProject(frameworkTarget, "UniformTypeIdentifiers.framework", false);
 
+            // CABTMIDICentralViewController for BLE MIDI pairing (BluetoothMidiPairing.mm)
+            project.AddFrameworkToProject(frameworkTarget, "CoreAudioKit.framework", false);
+
             project.WriteToFile(projectPath);
 
             string plistPath = Path.Combine(pathToBuiltProject, "Info.plist");
@@ -42,6 +45,11 @@ namespace Editor.Build
             // Vocals capture the microphone through BASS
             plist.root.SetString("NSMicrophoneUsageDescription",
                 "YARG uses the microphone for vocals gameplay.");
+
+            // BLE MIDI pairing (CABTMIDICentralViewController) uses CoreBluetooth;
+            // iOS terminates the app on Bluetooth access without this key.
+            plist.root.SetString("NSBluetoothAlwaysUsageDescription",
+                "YARG uses Bluetooth to connect wireless MIDI instruments.");
             plist.WriteToFile(plistPath);
         }
     }
